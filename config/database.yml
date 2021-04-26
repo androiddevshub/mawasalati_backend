@@ -51,5 +51,6 @@ test:
 production:
   <<: *default
   database: mawasalati_backend_production
-  username: mawasalati_backend
-  password: <%= ENV['MAWASALATI_BACKEND_DATABASE_PASSWORD'] %>
+  username: admin
+  password: mawasalati
+  host: mawasalati.cluxexsd1v1m.us-east-2.rds.amazonaws.com

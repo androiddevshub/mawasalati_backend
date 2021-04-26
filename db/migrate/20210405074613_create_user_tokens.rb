@@ -7,7 +7,7 @@ class CreateUserTokens < ActiveRecord::Migration[6.1]
       t.boolean :active
       t.timestamps
     end
-    add_index :user_tokens, ["user_id"], name: "index_api_keys_on_user_id", unique: false
-    add_index :user_tokens, ["access_token"], name: "index_api_keys_on_access_token", unique: true
+    add_index :user_tokens, ["user_id"], name: "index_user_tokens_on_user_id", unique: false
+    add_index :user_tokens, ["access_token"], name: "index_user_tokens_on_access_token", unique: true
   end
 end

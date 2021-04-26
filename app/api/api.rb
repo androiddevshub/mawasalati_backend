@@ -4,8 +4,10 @@ class Api < Grape::API
   prefix "api"
   default_error_formatter :json
   content_type :json, "application/json"
-  mount Tests
+  mount Buses
   mount Users
+  mount ScheduledBuses
+  mount Bookings
 
   before do
     header["Access-Control-Allow-Origin"] = "*"

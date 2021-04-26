@@ -16,7 +16,7 @@ class Users < Api
       if !user.present?
         user = User.new(params)
         if user.save
-          { status: true, data: user.as_json(except: [:created_at, :updated_at]), message: "Registration successful" }
+          { status: true, user: user.as_json(except: [:created_at, :updated_at]), message: "Registration successful" }
         else
           error!({ status: false, message: user.errors.full_messages.join(", ") }, 400)
         end
@@ -36,7 +36,7 @@ class Users < Api
       if user.present?
         if user.valid_password?(params[:password])
           key = UserToken.create(user_id: user.id)
-          { status: true, data: user.user_data(key.access_token), message: "Login successful" }
+          { status: true, user: user.user_data(key.access_token), message: "Login successful" }
         else
           error!({ status: false, message: "Email and password do not match" }, 400)
         end

@@ -10,7 +10,56 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_05_074613) do
+ActiveRecord::Schema.define(version: 2021_04_18_094903) do
+
+  create_table "bookings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "scheduled_bus_id", null: false
+    t.bigint "user_id", null: false
+    t.string "booking_id"
+    t.string "date"
+    t.decimal "total_price", precision: 10, scale: 2
+    t.string "email"
+    t.string "phone"
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["scheduled_bus_id"], name: "index_bookings_on_scheduled_bus_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
+  create_table "buses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "passengers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "booking_id", null: false
+    t.string "name"
+    t.string "age"
+    t.string "gender"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["booking_id"], name: "index_passengers_on_booking_id"
+  end
+
+  create_table "scheduled_buses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "bus_id", null: false
+    t.string "origin"
+    t.string "destination"
+    t.string "departure_center"
+    t.string "arrival_center"
+    t.string "departure_time"
+    t.string "arrival_time"
+    t.decimal "duration", precision: 5, scale: 2
+    t.integer "seats"
+    t.string "date"
+    t.integer "price"
+    t.integer "rating"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bus_id"], name: "index_scheduled_buses_on_bus_id"
+  end
 
   create_table "user_tokens", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "access_token"
@@ -39,4 +88,8 @@ ActiveRecord::Schema.define(version: 2021_04_05_074613) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "bookings", "scheduled_buses"
+  add_foreign_key "bookings", "users"
+  add_foreign_key "passengers", "bookings"
+  add_foreign_key "scheduled_buses", "buses"
 end

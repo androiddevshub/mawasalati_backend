@@ -11,6 +11,7 @@ class User < ApplicationRecord
       phone: phone,
       email: email,
       address: address,
+      admin: admin,
       token: token,
     }
   end

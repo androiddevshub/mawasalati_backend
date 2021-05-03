@@ -18,10 +18,9 @@ default: &default
 development:
   <<: *default
   database: mawasalati_backend_development
-  username: <%= ENV["DEV_DB_USER"] %>
-  password: <%= ENV["DEV_DB_PASSWORD"] %>
+  username: beardo
+  password: ShubJain@1995
   host: <%= ENV["DEV_DB_HOST"] %>
-  socket: /tmp/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

@@ -25,11 +25,12 @@ class ScheduledBuses < Api
         scheduled_buses = []
         @scheduled_buses.each do |scheduled_bus|
           scheduled_buses << {
+            id: scheduled_bus.id,
             bus_name: scheduled_bus.bus.name,
             origin: scheduled_bus.origin,
             destination: scheduled_bus.destination,
-            departure_center: scheduled_bus.departure_center,
-            arrival_center: scheduled_bus.arrival_center,
+            pickup_point: scheduled_bus.departure_center,
+            drop_point: scheduled_bus.arrival_center,
             departure_time: scheduled_bus.departure_time,
             arrival_time: scheduled_bus.arrival_time,
             duration: scheduled_bus.duration,

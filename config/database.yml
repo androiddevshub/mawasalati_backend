@@ -18,8 +18,8 @@ default: &default
 development:
   <<: *default
   database: mawasalati_backend_development
-  username: beardo
-  password: ShubJain@1995
+  username: <%= ENV["DEV_DB_HOST"] %>
+  password: <%= ENV["DEV_DB_HOST"] %>
   host: <%= ENV["DEV_DB_HOST"] %>
 
 # Warning: The database defined as "test" will be erased and

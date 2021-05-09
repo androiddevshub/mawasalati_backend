@@ -10,13 +10,16 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item>
+            <b-nav-item v-if="isLogged === true">
               <router-link class="nav-link" to="/buses"
                 >Buses</router-link
               ></b-nav-item
             >
-
-            <!-- <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
+            <b-nav-item v-if="isLogged === true">
+              <router-link class="nav-link" to="/scheduled_buses"
+                >Scheduled Buses</router-link
+              ></b-nav-item
+            >
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto">

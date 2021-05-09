@@ -18,6 +18,7 @@ import "xe-utils";
 import VXETable from "vxe-table";
 import "vxe-table/lib/style.css";
 import EventBus from "./../EventBus";
+import moment from "moment";
 
 Vue.use(VXETable);
 // Make BootstrapVue available throughout your project
@@ -26,6 +27,18 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
 Vue.use(ElementUI);
+
+Vue.filter("formatTime", function(value) {
+  if (value) {
+    return moment(value).format("h:mm A");
+  }
+});
+
+Vue.filter("formatDate", function(value) {
+  if (value) {
+    return moment(String(value)).format("DD-MM-YYYY");
+  }
+});
 
 Vue.config.productionTip = false;
 Vue.prototype.$bus = EventBus;

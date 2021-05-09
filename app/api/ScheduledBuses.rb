@@ -4,8 +4,8 @@ class ScheduledBuses < Api
 
   namespace :scheduled_buses, desc: "Bus scheduled related operations" do
     get "/" do
-      scheduled_buses = ScheduledBus.all
-      { status: true, data: scheduled_buses }
+      @scheduled_buses = ScheduledBus.all
+      { status: true, data: @scheduled_buses }
     end
 
     get "/cities" do
@@ -20,7 +20,8 @@ class ScheduledBuses < Api
     # end
 
     get "/scheduled" do
-      @scheduled_buses = ScheduledBus.where(origin: params[:origin], destination: params[:destination], date: params[:date]).includes(:bus)
+      # @scheduled_buses = ScheduledBus.where(origin: params[:origin], destination: params[:destination], date: Date.parse(params[:date])).includes(:bus)
+      @scheduled_buses = ScheduledBus.where("origin = ? AND destination = ? AND DATE(date) = ?", params[:origin], params[:destination], Date.parse(params[:date])).includes(:bus)
       if @scheduled_buses
         scheduled_buses = []
         @scheduled_buses.each do |scheduled_bus|
@@ -31,8 +32,8 @@ class ScheduledBuses < Api
             destination: scheduled_bus.destination,
             pickup_point: scheduled_bus.departure_center,
             drop_point: scheduled_bus.arrival_center,
-            departure_time: scheduled_bus.departure_time,
-            arrival_time: scheduled_bus.arrival_time,
+            departure_time: DateTime.parse(scheduled_bus.departure_time).utc.localtime.strftime("%I:%M %p"),
+            arrival_time: DateTime.parse(scheduled_bus.arrival_time).utc.localtime.strftime("%I:%M %p"),
             duration: scheduled_bus.duration,
             seats: scheduled_bus.seats,
             date: scheduled_bus.date,
@@ -48,7 +49,7 @@ class ScheduledBuses < Api
 
     post "/" do
       scheduled_bus = ScheduledBus.new(params)
-      if scheduled_bus.save
+      if scheduled_bus.save!
         { status: true, data: scheduled_bus, message: "Scheduled Bus created successfully" }
       else
         error!({ status: false, message: "Something went wrong" }, 400)
@@ -59,6 +60,15 @@ class ScheduledBuses < Api
       scheduled_bus = ScheduledBus.find_by(id: params[:id])
       if scheduled_bus && scheduled_bus.update(params)
         { status: true, data: scheduled_bus, message: "Scheduled Bus updated successfully" }
+      else
+        error!({ status: false, message: "Something went wrong" }, 400)
+      end
+    end
+
+    delete "/:id" do
+      scheduled_bus = ScheduledBus.find_by(id: params[:id])
+      if scheduled_bus && scheduled_bus.delete
+        { status: true, data: scheduled_bus, message: "Scheduled bus deleted successfully" }
       else
         error!({ status: false, message: "Something went wrong" }, 400)
       end

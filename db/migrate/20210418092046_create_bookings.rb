@@ -5,7 +5,9 @@ class CreateBookings < ActiveRecord::Migration[6.1]
       t.references :user, null: false, foreign_key: true
       t.string :booking_id
       t.string :date
-      t.decimal :total_price, precision: 10, scale: 2
+      t.decimal :tax_fare, precision: 10, scale: 2
+      t.decimal :passenger_fare, precision: 10, scale: 2
+      t.decimal :total_fare, precision: 10, scale: 2
       t.string :email
       t.string :phone
       t.string :status

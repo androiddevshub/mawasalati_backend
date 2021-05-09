@@ -17,7 +17,9 @@ ActiveRecord::Schema.define(version: 2021_04_18_094903) do
     t.bigint "user_id", null: false
     t.string "booking_id"
     t.string "date"
-    t.decimal "total_price", precision: 10, scale: 2
+    t.decimal "tax_fare", precision: 10, scale: 2
+    t.decimal "passenger_fare", precision: 10, scale: 2
+    t.decimal "total_fare", precision: 10, scale: 2
     t.string "email"
     t.string "phone"
     t.string "status"
@@ -29,6 +31,9 @@ ActiveRecord::Schema.define(version: 2021_04_18_094903) do
 
   create_table "buses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
+    t.string "bus_type"
+    t.string "operator_contact_first"
+    t.string "operator_contact_second"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -45,13 +50,14 @@ ActiveRecord::Schema.define(version: 2021_04_18_094903) do
 
   create_table "scheduled_buses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "bus_id", null: false
+    t.string "bus_number"
     t.string "origin"
     t.string "destination"
     t.string "departure_center"
     t.string "arrival_center"
     t.string "departure_time"
     t.string "arrival_time"
-    t.decimal "duration", precision: 5, scale: 2
+    t.string "duration"
     t.integer "seats"
     t.string "date"
     t.integer "price"
@@ -68,8 +74,8 @@ ActiveRecord::Schema.define(version: 2021_04_18_094903) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["access_token"], name: "index_api_keys_on_access_token", unique: true
-    t.index ["user_id"], name: "index_api_keys_on_user_id"
+    t.index ["access_token"], name: "index_user_tokens_on_access_token", unique: true
+    t.index ["user_id"], name: "index_user_tokens_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

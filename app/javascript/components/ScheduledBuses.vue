@@ -14,7 +14,8 @@
       :data="
         scheduledBusesData.filter(
           (data) =>
-            !search || data.date.toLowerCase().includes(search.toLowerCase())
+            !search ||
+            data.departure_date.toLowerCase().includes(search.toLowerCase())
         )
       "
       border
@@ -23,9 +24,14 @@
       <el-table-column type="index" label="Id" width="100"> </el-table-column>
       <el-table-column prop="origin" label="Origin"></el-table-column>
       <el-table-column prop="destination" label="Destination"></el-table-column>
-      <el-table-column prop="date" label="Date">
+      <el-table-column prop="depature_date" label="Depature Date">
         <template slot-scope="scope">
-          {{ scope.row.date | formatDate }}
+          {{ scope.row.departure_date | formatDate }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="arrival_date" label="Arrival Date">
+        <template slot-scope="scope">
+          {{ scope.row.arrival_date | formatDate }}
         </template>
       </el-table-column>
       <el-table-column prop="departure_time" label="Depature Time">
@@ -111,12 +117,28 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="Scheduled Date" label-width="150px">
-          <el-date-picker
-            v-model="formDataScheduledBus.date"
-            type="date"
-            placeholder="Select scheduled date"
-          >
-          </el-date-picker>
+          <el-row>
+            <el-col :span="10">
+              <el-form-item prop="departure_date">
+                <el-date-picker
+                  v-model="formDataScheduledBus.departure_date"
+                  type="date"
+                  placeholder="Departure date"
+                >
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10" style="margin-left: 20px">
+              <el-form-item prop="arrival_date">
+                <el-date-picker
+                  v-model="formDataScheduledBus.arrival_date"
+                  type="date"
+                  placeholder="Arrival date"
+                >
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form-item>
         <el-form-item label-width="150px" label="Time">
           <el-row>
@@ -204,7 +226,8 @@ export default {
         arrival_time: null,
         duration: null,
         seats: null,
-        date: null,
+        departure_date: null,
+        arrival_date: null,
         price: null,
         rating: null,
       },
@@ -259,7 +282,9 @@ export default {
         this.formDataScheduledBus.departure_time = row.departure_time;
         this.formDataScheduledBus.arrival_center = row.arrival_center;
         this.formDataScheduledBus.arrival_time = row.arrival_time;
-        this.formDataScheduledBus.date = row.date;
+        this.formDataScheduledBus.departure_date = row.departure_date;
+        this.formDataScheduledBus.arrival_date = row.arrival_date;
+        this.formDataScheduledBus.duration = row.duration;
         this.formDataScheduledBus.seats = row.seats;
         this.formDataScheduledBus.price = row.price;
       }
@@ -343,6 +368,9 @@ export default {
         const duration = moment.duration(endTime.diff(startTime));
         const hours = parseInt(duration.asHours());
         const minutes = parseInt(duration.asMinutes()) - hours * 60;
+        if (this.formDataScheduledBus.duration !== null) {
+        }
+        this.formDataScheduledBus.duration = `${hours}h ${minutes}m`;
         if (hours < 0) {
           return `Arrival time should be greater than Depature Time `;
         } else {

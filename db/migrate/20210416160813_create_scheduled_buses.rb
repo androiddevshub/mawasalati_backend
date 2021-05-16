@@ -11,7 +11,8 @@ class CreateScheduledBuses < ActiveRecord::Migration[6.1]
       t.string :arrival_time
       t.string :duration
       t.integer :seats
-      t.string :date
+      t.string :departure_date
+      t.string :arrival_date
       t.integer :price
       t.integer :rating
       t.timestamps

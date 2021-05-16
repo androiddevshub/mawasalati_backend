@@ -59,7 +59,8 @@ ActiveRecord::Schema.define(version: 2021_04_18_094903) do
     t.string "arrival_time"
     t.string "duration"
     t.integer "seats"
-    t.string "date"
+    t.string "departure_date"
+    t.string "arrival_date"
     t.integer "price"
     t.integer "rating"
     t.datetime "created_at", precision: 6, null: false

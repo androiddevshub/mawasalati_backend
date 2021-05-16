@@ -21,22 +21,24 @@ class ScheduledBuses < Api
 
     get "/scheduled" do
       # @scheduled_buses = ScheduledBus.where(origin: params[:origin], destination: params[:destination], date: Date.parse(params[:date])).includes(:bus)
-      @scheduled_buses = ScheduledBus.where("origin = ? AND destination = ? AND DATE(date) = ?", params[:origin], params[:destination], Date.parse(params[:date])).includes(:bus)
+      @scheduled_buses = ScheduledBus.where("origin = ? AND destination = ? AND DATE(departure_date) = ?", params[:origin], params[:destination], Date.parse(params[:date]) - 1.day).includes(:bus)
       if @scheduled_buses
         scheduled_buses = []
         @scheduled_buses.each do |scheduled_bus|
           scheduled_buses << {
             id: scheduled_bus.id,
             bus_name: scheduled_bus.bus.name,
+            bus_type: scheduled_bus.bus.bus_type,
             origin: scheduled_bus.origin,
             destination: scheduled_bus.destination,
             pickup_point: scheduled_bus.departure_center,
             drop_point: scheduled_bus.arrival_center,
+            departure_date: DateTime.parse(scheduled_bus.departure_date).utc.localtime.strftime("%Y-%m-%d"),
+            arrival_date: DateTime.parse(scheduled_bus.arrival_date).utc.localtime.strftime("%Y-%m-%d"),
             departure_time: DateTime.parse(scheduled_bus.departure_time).utc.localtime.strftime("%I:%M %p"),
             arrival_time: DateTime.parse(scheduled_bus.arrival_time).utc.localtime.strftime("%I:%M %p"),
             duration: scheduled_bus.duration,
             seats: scheduled_bus.seats,
-            date: scheduled_bus.date,
             price: scheduled_bus.price,
             rating: scheduled_bus.rating,
           }
